@@ -129,4 +129,4 @@ dmypy.json
 
 # output folders
 runs
-data/prefix/cached*
+data/cached*

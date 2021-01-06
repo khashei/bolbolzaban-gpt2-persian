@@ -23,6 +23,9 @@ def load_dataset(train_path, test_path, tokenizer):
     return train_dataset, test_dataset, data_collator
 
 
+# Freezing the lower layers increases the training speed and reduces the memory requirement.
+# Depending on your task you may want to freeze all layers and train addition layers that you are adding to the model
+# or unfreeze as many layers that you can affort training with a reasonable batchsize.
 def freeze_lower_layers():
     for param in model.base_model.parameters():
         param.requires_grad = False
@@ -50,6 +53,8 @@ training_args = TrainingArguments(
     output_dir="./model",
     overwrite_output_dir=True,
     num_train_epochs=5,
+    # Set the batch size to a maximum value that could fit into GPU memory,
+    # for example 12 is the largest batch size that could work on a 6gb GPU when training the last to layers
     per_device_train_batch_size=12,
     per_device_eval_batch_size=12,
     eval_steps=1000,
